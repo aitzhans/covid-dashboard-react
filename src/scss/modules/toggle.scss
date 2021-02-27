@@ -34,7 +34,7 @@
     height: 3rem;
     border-radius: 50%;
     background-color: $toggle-circle-color;
-    background-image: url("./assets/img/arrow_right.svg");
+    background-image: url("../../img/arrow_right.svg");
     background-size: 1.4rem 1.4rem;
     background-repeat: no-repeat;
     background-position: center center;
@@ -48,7 +48,7 @@
         background-color: $inputs-bg-color;
     }
   }
-  
+
 
   &--toggled {
     padding-left: 0.5rem;
@@ -56,7 +56,7 @@
     &::after {
       left: 100%;
       margin-left: -1rem;
-      background-image: url("./assets/img/arrow_left.svg");
+      background-image: url("../../img/arrow_left.svg");
       box-shadow: -0.2rem 0 0.1rem rgba(black, 0.5);
     }
   }
@@ -67,7 +67,7 @@
   padding-left: 1rem;
   margin: 0;
   font-family: 'Titillium Web', sans-serif;
-  font-weight: 400; 
+  font-weight: 400;
   font-size: 1.3rem;
   line-height: 2rem;
 }

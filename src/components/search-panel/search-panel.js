@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 
 export default class SearchPanel extends Component {
-  constructor() {
-    super();
-    this.state = {
-      term: ''
-    };
-  }
+  // constructor() {
+  //   super();
+  //   this.state = {
+  //     term: ''
+  //   };
+  // }
 
   onSearchChange = (e) => {
     const term = e.target.value;
-    this.setState({ term });
-    // console.log(term);
+    // this.setState({ term });
     this.props.onSearchChange(term);
+  }
+
+  onBlur = (e) => {
+    e.target.value = '';
+    // this.setState({ term: '' });
   }
 
   render() {
@@ -21,6 +25,7 @@ export default class SearchPanel extends Component {
         <input
           className="content__search  content__search--countries"
           onChange={this.onSearchChange}
+          onBlur={this.onBlur}
           placeholder="Search by Country..."
         />
         <div className="content__search--suggestions" />

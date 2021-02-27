@@ -17,9 +17,26 @@ const countriesDataLoaded = (countries) => ({
   payload: countries
 });
 
+const countrySelected = (country) => ({
+  type: 'COUNTRY_SELECTED',
+  payload: country
+});
+
+const searchStarted = (country) => ({
+  type: 'SEARCH_STARTED',
+  payload: country
+});
+
+const countryDeselected = () => ({
+  type: 'COUNTRY_DESELECTED'
+});
+
 export {
   globalDataRequested,
   globalDataLoaded,
   globalDataError,
   countriesDataLoaded,
+  countrySelected,
+  countryDeselected,
+  searchStarted,
 };

@@ -88,6 +88,18 @@
   }
 }
 
+.content__to-all {
+  width: 78%;
+  margin-top: 1rem;
+  padding: 1rem;
+  background: $main-bg-color;
+
+  &:hover {
+    cursor: pointer;
+    background: $toggle-circle-color;
+  }
+}
+
 .content__to-global-btn {
   display: block;
   width: 2rem;

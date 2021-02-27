@@ -1,8 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
-const CountriesListItem = ({ cases, name, flagPath }) => {
+import { countrySelected } from '../../actions';
+
+const CountriesListItem = ({ cases, name, flagPath, countrySelected }) => {
   return (
-    <>
+    <div className="countries__item" onClick={() => countrySelected(name)}>
       <span className="countries__number">
         {cases.toLocaleString('de-DE')}
       </span>
@@ -10,8 +13,16 @@ const CountriesListItem = ({ cases, name, flagPath }) => {
       <div className="countries__flag">
         <img src={flagPath} alt="flag" />
       </div>
-    </>
+    </div>
   );
 };
 
-export default CountriesListItem;
+const mapStateToProps = ({ selectedCountry }) => ({
+  selectedCountry
+});
+
+const mapDispatchToProps = {
+  countrySelected,
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(CountriesListItem);

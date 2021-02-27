@@ -12,6 +12,8 @@ const initialState = {
     newDeaths: null,
   },
   countries: [],
+  selectedCountry: null,
+  searchQuery: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,6 +39,27 @@ const reducer = (state = initialState, action) => {
         countries: action.payload,
         loading: false,
         error: null
+      };
+
+    case 'COUNTRY_SELECTED':
+      return {
+        ...state,
+        selectedCountry: action.payload,
+        searchQuery: null
+      };
+
+    case 'COUNTRY_DESELECTED':
+      return {
+        ...state,
+        selectedCountry: null,
+        searchQuery: null
+      };
+
+    case 'SEARCH_STARTED':
+      return {
+        ...state,
+        selectedCountry: null,
+        searchQuery: action.payload
       };
 
     default:
