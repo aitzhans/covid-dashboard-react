@@ -3,7 +3,7 @@
     "browser": true,
     "es2021": true
   },
-  "extends": ["plugin:react/recommended", "airbnb", "prettier"],
+  "extends": ["airbnb"],
   "parserOptions": {
     "ecmaFeatures": {
       "jsx": true
@@ -11,10 +11,74 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "prettier"],
   "rules": {
-    "prettier/prettier": ["warn", { "singleQuote": true }],
-    "react/prop-types": "off"
+      "func-names": [
+        "error",
+        "never"
+      ],
+      "no-console": "off",
+      "no-return-await":"off",
+      "no-trailing-spaces": "off",
+      "no-underscore-dangle": "off",
+      "comma-dangle": 0,
+      "prefer-arrow-callback": 0,
+      "arrow-body-style": 0,
+      "no-lonely-if": 0,
+      "eqeqeq": 0,
+      "max-len": [
+        "error",
+        {
+          "code": 140,
+          "ignoreStrings": true
+        }
+      ],
+      "object-curly-newline": 0,
+      "linebreak-style": 0,
+      "indent": 0,
+      "no-plusplus": [
+        "error",
+        {
+          "allowForLoopAfterthoughts": true
+        }
+      ],
+      "no-restricted-syntax": [
+        "error",
+        "never"
+      ],
+      "no-magic-numbers": ["off", { "ignore": [0, 1, -1, 0.5] }],
+      "no-inline-comments": "off",
+      "lines-between-class-members": [
+        "error",
+        "always",
+        {
+          "exceptAfterSingleLine": true
+        }
+      ],
+      "import/extensions": [
+        "off",
+        "never"
+      ],
+      "quotes": "off",
+      "import/prefer-default-export": "off",
+      "react/no-unused-state": "off",
+      "react/prop-types": "off",
+      "react/prefer-stateless-function": "off",
+      "react/jsx-filename-extension": "off",
+      "react/jsx-props-no-spreading": "off",
+      "react/jsx-one-expression-per-line": "off",
+      "react/destructuring-assignment": "off",
+      "no-unused-vars": "off",
+      "no-shadow": "off"
   },
-  "parser": "babel-eslint"
+  "parser": "babel-eslint",
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "extensions": [
+          ".js",
+          ".jsx"
+        ]
+      }
+    }
+  }
 }
