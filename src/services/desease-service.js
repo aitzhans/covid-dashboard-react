@@ -15,19 +15,14 @@ export default class DeseaseService {
     const res = await this.getResource(
       `all?yesterday=false&twoDaysAgo=0&allowNull=true`
     );
-    // console.log(res);
-    // console.log(new Date(res.updated).toLocaleString().slice(0, 10));
-    // return {
-    //   lastUpdated: new Date(),
-    //   population: res.population,
-    //   totalConfirmed: res.cases,
-    //   totalRecovered: res.recovered,
-    //   totalDeaths: res.deaths,
-    //   newConfirmed: res.todayCases,
-    //   newRecovered: res.todayDeaths,
-    //   newDeaths: res.todayRecovered,
-    // };
     return this._transformGlobal(res);
+  };
+
+  getCountriesData = async () => {
+    const res = await this.getResource(
+      `countries?yesterday=false&twoDaysAgo=false&allowNull=true`
+    );
+    return this._transformCountries(res);
   };
 
   _transformGlobal = (res) => ({
@@ -40,4 +35,24 @@ export default class DeseaseService {
     newRecovered: res.todayDeaths,
     newDeaths: res.todayRecovered,
   });
+
+  _transformCountries = (res) => {
+    const countries = [];
+    res.forEach((country) => {
+      countries.push({
+        country: country.country || 0,
+        population: country.population || 0,
+        flagPath: country.countryInfo.flag,
+        totalConfirmed: country.cases || 0,
+        totalRecovered: country.recovered || 0,
+        totalDeaths: country.deaths || 0,
+        newConfirmed: country.todayCases || 0,
+        newRecovered: country.todayRecovered || 0,
+        newDeaths: country.todayDeaths || 0,
+        lat: country.countryInfo.lat || 0,
+        long: country.countryInfo.long || 0,
+      });
+    });
+    return countries;
+  }
 }

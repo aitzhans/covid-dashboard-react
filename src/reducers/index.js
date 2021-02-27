@@ -1,5 +1,3 @@
-import { act } from "react-dom/test-utils";
-
 const initialState = {
   loading: true,
   error: null,
@@ -12,7 +10,8 @@ const initialState = {
     newConfirmed: null,
     newRecovered: null,
     newDeaths: null,
-  }
+  },
+  countries: [],
 };
 
 const reducer = (state = initialState, action) => {
@@ -25,10 +24,17 @@ const reducer = (state = initialState, action) => {
       };
 
     case 'FETCH_GLOBAL_SUCCESS':
-      console.log(action.payload);
       return {
         ...state,
         global: action.payload,
+        loading: false,
+        error: null
+      };
+
+    case 'FETCH_COUNTRIES_SUCCESS':
+      return {
+        ...state,
+        countries: action.payload,
         loading: false,
         error: null
       };

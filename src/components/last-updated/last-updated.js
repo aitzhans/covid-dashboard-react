@@ -28,12 +28,14 @@ class LastUpdated extends Component {
 
     return (
       <div>
-        <p>
-          Last updated: {lastUpdated}
-        </p>
-        <p>
-          Global Cases: {totalConfirmed}
-        </p>
+        <div className="content__last-updated">
+          <h3 className="content__subtitle  content__subtitle--mid">Last updated</h3>
+          <p className="content__accent  content__accent--date">{lastUpdated}</p>
+        </div>
+        <div className="content__global">
+          <h3 className="content__subtitle  content__subtitle--mid">Global cases</h3>
+          <p className="content__accent  content__accent--total">{totalConfirmed.toLocaleString('de-DE')}</p>
+        </div>
       </div>
     );
   }

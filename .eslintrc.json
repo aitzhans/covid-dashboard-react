@@ -67,6 +67,7 @@
       "react/jsx-props-no-spreading": "off",
       "react/jsx-one-expression-per-line": "off",
       "react/destructuring-assignment": "off",
+      "jsx-a11y/label-has-associated-control": "off",
       "no-unused-vars": "off",
       "no-shadow": "off"
   },

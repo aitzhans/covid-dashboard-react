@@ -12,8 +12,14 @@ const globalDataError = (error) => ({
   payload: error,
 });
 
+const countriesDataLoaded = (countries) => ({
+  type: 'FETCH_COUNTRIES_SUCCESS',
+  payload: countries
+});
+
 export {
   globalDataRequested,
   globalDataLoaded,
   globalDataError,
+  countriesDataLoaded,
 };
