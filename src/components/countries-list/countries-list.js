@@ -19,10 +19,6 @@ class CountriesList extends Component {
       .then((data) => countriesDataLoaded(data));
   }
 
-  // onFilterChange = (filter) => {
-  //   this.setState({ filter });
-  // }
-
   onSearchChange = (term) => {
     // this.setState({ term });
     this.props.searchStarted(term);

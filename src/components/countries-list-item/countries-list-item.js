@@ -7,7 +7,7 @@ const CountriesListItem = ({ cases, name, flagPath, countrySelected }) => {
   return (
     <div className="countries__item" onClick={() => countrySelected(name)}>
       <span className="countries__number">
-        {cases.toLocaleString('de-DE')}
+        {cases ? cases.toLocaleString('de-DE') : cases}
       </span>
       <span className="countries__name">{name}</span>
       <div className="countries__flag">
