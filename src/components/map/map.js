@@ -1,42 +1,39 @@
-import React from 'react';
-// import OptionsPanel from '../options-panel';
-import L from 'leaflet';
-
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useEffect } from 'react';
+// import OptionsButtons from '../options-buttons';
 import './map.scss';
 
-import icon from 'leaflet/dist/images/marker-icon.png';
-import iconShadow from 'leaflet/dist/images/marker-shadow.png';
+const L = require('leaflet');
 
-const DefaultIcon = L.icon({
-    iconUrl: icon,
-    shadowUrl: iconShadow
-});
+const WORLD_BOUNDS = [
+  [-90, -180],
+  [90, 180],
+];
+const DEFAULT_MAP_ZOOM = 3;
 
-L.Marker.prototype.options.icon = DefaultIcon;
-
-const position = [51.505, -0.09];
-
-export const WORLD_BOUNDS = [[-90, -180], [90, 180]];
-const worldBounds = L.latLngBounds(WORLD_BOUNDS);
+const renderMap = () => {
+  const worldBounds = L.latLngBounds(WORLD_BOUNDS);
+  const map = new L.Map('map-container', {
+    center: worldBounds.getCenter(),
+    zoom: DEFAULT_MAP_ZOOM,
+    minZoom: 2,
+    maxBounds: worldBounds,
+    maxBoundsViscosity: 0.75,
+  });
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+    attribution: '',
+    noWrap: false,
+  }).addTo(map);
+};
 
 const Map = () => {
+  useEffect(() => {
+    renderMap();
+  }, []);
+
   return (
     <div className="content__map">
-      <div className="content__map-container  leaflet-container">
-        <MapContainer center={worldBounds.getCenter()} zoom={3} scrollWheelZoom={false}>
-          <TileLayer
-            attribution=""
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-          />
-          {/* <Marker position={[51.505, -0.09]}>
-            <Popup>
-              A pretty CSS3 popup. <br /> Easily customizable.
-            </Popup>
-          </Marker> */}
-        </MapContainer>
-      </div>
+      <div className="content__map-container" id="map-container" />
+      {/* <OptionsButtons location="map" /> */}
     </div>
   );
 };
