@@ -38,8 +38,8 @@ export default class DeseaseService {
     const res = await this.getResource(
       `historical/${countryName}?lastdays=all`
     );
-    console.log(res);
-    return this._transformDaily(res);
+
+    return this._transformDaily(res, countryName);
   }
 
   _transformGlobal = (res) => ({
@@ -85,9 +85,9 @@ export default class DeseaseService {
     const dailyConfirmed = dailyStats.cases;
     const dailyDeaths = dailyStats.deaths;
     const dailyRecovered = dailyStats.recovered;
-    currentGraph.dailyConfirmedIncrements = this._createIncrementsForGraphs(dailyConfirmed, 'dailyConfirmedIncrements');
-    currentGraph.dailyDeathsIncrements = this._createIncrementsForGraphs(dailyDeaths, 'dailyDeathsIncrements');
-    currentGraph.dailyRecoveredIncrements = this._createIncrementsForGraphs(dailyRecovered, 'dailyRecoveredIncrements');
+    currentGraph.dailyConfirmedIncrements = this._createIncrementsForGraphs(dailyConfirmed);
+    currentGraph.dailyDeathsIncrements = this._createIncrementsForGraphs(dailyDeaths);
+    currentGraph.dailyRecoveredIncrements = this._createIncrementsForGraphs(dailyRecovered);
 
     return currentGraph;
   }

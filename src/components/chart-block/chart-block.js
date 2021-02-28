@@ -1,10 +1,8 @@
 /* eslint-disable class-methods-use-this */
-import React, { Component } from 'react';
-import { Bar } from 'react-chartjs-2';
+import React, { Component, useEffect } from 'react';
 import Chart from 'chart.js';
 
 import { connect } from 'react-redux';
-import OptionsPanel from '../options-panel';
 
 import withDataService from '../hoc';
 import { globalDailyRequested,
@@ -31,137 +29,115 @@ const MONTH_NAMES = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'
 ];
 
-class ChartBlock extends Component {
-  componentDidMount() {
-    const { dataService, globalDailyLoaded } = this.props;
-    dataService.getGlobalDaily()
-      .then((data) => {
-        globalDailyLoaded(data);
-        // this.renderChart(currentGraph);
-      });
-  }
+const renderChart = (currentGraph, selectedCriteria = 'dailyConfirmedIncrements') => {
+  if (!currentGraph[selectedCriteria]) return;
+  const key = selectedCriteria;
+  const tooltipTxt = CHART_TOOLTIPS[selectedCriteria] || 'Daily Confirmed Rates';
+  const dates = [...currentGraph[key].keys()].map((x) => x.slice(0, 10));
+  const values = [...currentGraph[key].values()];
+  const ctx = document.getElementById('myChart').getContext('2d');
 
-  componentDidUpdate() {
-    this.render();
-  }
-
-  updateDailyData(selectedCountry) {
-    const { dataService, countryDailyRequested, countryDailyLoaded } = this.props;
-    countryDailyRequested();
-    // dataService.getCountryDaily(selectedCountry)
-    //   .then((data) => {
-    //     countryDailyLoaded(data);
-    //     // this.renderChart(currentGraph);
-    //   });
-  }
-
-  // eslint-disable-next-line class-methods-use-this
-  renderChart(currentGraph, selectedCriteria = 'dailyConfirmedIncrements') {
-      const key = selectedCriteria;
-      const tooltipTxt = CHART_TOOLTIPS[selectedCriteria] || 'Daily Confirmed Rates';
-      // console.log(currentGraph);
-      const dates = [...currentGraph[key].keys()].map((x) => x.slice(0, 10));
-      const values = [...currentGraph[key].values()];
-      // console.log(dates);
-      // console.log(values);
-      // if (this.chart) { this.chart.destroy(); }
-      const ctx = document.getElementById('myChart').getContext('2d');
-
-      this.chart = new Chart(ctx, {
-          type: 'bar',
-          data: {
-              labels: dates,
-              datasets: [{
-                  label: key,
-                  data: values,
-                  barPercentage: 1.0,
-                  categoryPercentage: 1.0,
-                  hoverBackgroundColor: 'rgba(0, 0, 0, 0.4)'
+  const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: dates,
+          datasets: [{
+              label: key,
+              data: values,
+              barPercentage: 1.0,
+              categoryPercentage: 1.0,
+              hoverBackgroundColor: 'rgba(0, 0, 0, 0.4)'
+          }]
+      },
+      options: {
+          legend: false,
+          maintainAspectRatio: false,
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true,
+                      callback(value) {
+                          return (value > 1000 ? `${`${value}`.slice(0, -3)}K` : value);
+                      }
+                  },
+              }],
+              xAxes: [{
+                  gridLines: {
+                      display: false,
+                      offsetGridLines: false
+                  },
+                  ticks: {
+                      maxTicksLimit: 6,
+                      maxRotation: 0,
+                      minRotation: 0,
+                      callback(value) {
+                          return MONTH_NAMES[parseInt(value.slice(0, 2), 10) - 1];
+                      }
+                  }
               }]
-          },
-          options: {
-              legend: false,
-              maintainAspectRatio: false,
-              scales: {
-                  yAxes: [{
-                      ticks: {
-                          beginAtZero: true,
-                          callback(value) {
-                              return (value > 1000 ? `${`${value}`.slice(0, -3)}K` : value);
-                          }
-                      },
-                  }],
-                  xAxes: [{
-                      gridLines: {
-                          display: false,
-                          offsetGridLines: false
-                      },
-                      ticks: {
-                          maxTicksLimit: 6,
-                          maxRotation: 0,
-                          minRotation: 0,
-                          callback(value) {
-                              return MONTH_NAMES[parseInt(value.slice(0, 2), 10) - 1];
-                          }
-                      }
-                  }]
 
-              },
-              tooltips: {
-                  callbacks: {
-                      label(tooltipItem) {
-                          return `${tooltipTxt} ${tooltipItem.yLabel}`;
-                      }
+          },
+          tooltips: {
+              callbacks: {
+                  label(tooltipItem) {
+                      return `${tooltipTxt} ${tooltipItem.yLabel}`;
                   }
               }
           }
-      });
-  }
+      }
+  });
+};
 
-  render() {
-    const { loading, error } = this.props;
-    if (loading) {
-      return (
-        <div className="content__chart">
-          <h2 className="content__subtitle">Daily rates: <span className="content__country-name">Global</span></h2>
-          <div className="content__chart-cont  chart-container">
-            <canvas id="myChart" />
-            <Spinner />
+const ChartBlock = ({ dataService, globalDailyRequested, globalDailyLoaded, countryDailyRequested, countryDailyLoaded,
+              loading, error, currentGraph, selectedCountry, selectedCriteria }) => {
+  useEffect(() => {
+    renderChart(currentGraph, SELECTED_CRITERIA[selectedCriteria]);
+  }, [currentGraph, selectedCriteria]);
 
-          </div>
-        </div>
-
-      );
+  useEffect(() => {
+    if (!selectedCountry) {
+      globalDailyRequested();
+      dataService.getGlobalDaily()
+        .then((data) => {
+          globalDailyLoaded(data);
+        });
+    } else {
+      countryDailyRequested();
+      dataService.getCountryDaily(selectedCountry)
+        .then((data) => {
+          countryDailyLoaded(data);
+        });
     }
+  }, [selectedCountry]);
 
-    if (error) {
-      return <ErrorIndicator />;
-    }
-
-    const { currentGraph, selectedCountry, selectedCriteria } = this.props;
-    const name = selectedCountry || "Global";
-    const chart = this.renderChart(currentGraph, SELECTED_CRITERIA[selectedCriteria]);
-    // console.log(selectedCountry);
-    // console.log(selectedCriteria);
-    // if (selectedCountry) {
-    //   this.updateDailyData(selectedCountry);
-    // }
-
+  if (loading) {
     return (
       <div className="content__chart">
-        <h2 className="content__subtitle">Daily rates: <span className="content__country-name">{name}</span></h2>
-        <br />
+        <h2 className="content__subtitle">Daily rates: <span className="content__country-name">Global</span></h2>
         <div className="content__chart-cont  chart-container">
           <canvas id="myChart" />
-          {/* {setTimeout((() => this.renderChart(currentGraph, SELECTED_CRITERIA[selectedCriteria])), 10)} */}
-          {/* { this.renderChart(currentGraph, SELECTED_CRITERIA[selectedCriteria])} */}
-          { chart }
+          <Spinner />
         </div>
       </div>
-
     );
   }
-}
+
+  if (error) {
+    return <ErrorIndicator />;
+  }
+
+  const name = selectedCountry || "Global";
+
+  return (
+    <div className="content__chart">
+      <h2 className="content__subtitle">Daily rates: <span className="content__country-name">{name}</span></h2>
+      <br />
+      <div className="content__chart-cont  chart-container">
+        <canvas id="myChart" />
+      </div>
+    </div>
+  );
+};
 
 const mapStateToProps = ({ currentGraph, loadingDaily, errorDaily, selectedCountry, selectedCriteria }) => ({
   currentGraph,
