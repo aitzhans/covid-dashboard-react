@@ -13,31 +13,19 @@ import OptionsPanel from '../options-panel';
 import ReturnToAll from '../return-to-all';
 
 class CountriesList extends Component {
-  constructor() {
-    super();
-    this.state = {
-      term: '',
-      filter: 'totalConfirmed' // totalDeaths, totalConfirmed, totalRecovered
-    };
-  }
-
   componentDidMount() {
     const { dataService, countriesDataLoaded } = this.props;
     dataService.getCountriesData()
       .then((data) => countriesDataLoaded(data));
   }
 
-  onFilterChange = (filter) => {
-    this.setState({ filter });
-  }
+  // onFilterChange = (filter) => {
+  //   this.setState({ filter });
+  // }
 
   onSearchChange = (term) => {
     // this.setState({ term });
     this.props.searchStarted(term);
-  }
-
-  onCountrySelect = (countryName) => {
-    this.setState({ selectedCountry: countryName });
   }
 
   // eslint-disable-next-line class-methods-use-this
@@ -54,8 +42,6 @@ class CountriesList extends Component {
   }
 
   renderElements(countries, filter, selectedCountry, term) {
-    // const { term } = this.state;
-
     let visibleItems;
     if (selectedCountry) {
       visibleItems = countries.filter((item) => item.country.toLowerCase() === selectedCountry.toLowerCase());
@@ -65,15 +51,10 @@ class CountriesList extends Component {
       visibleItems = this.search(countries, term);
     }
 
-    // const numbersSort = (a, b) => b - a;
-    // countries.sort((a, b) => numbersSort(a[filter], b[filter]));
-    // const visibleItems = this.search(countries, term);
-
     return visibleItems.map((item) => {
       const { country, flagPath } = item;
       const filterCriteria = item[filter];
       return (
-        // <li key={country} className="countries__item" onClick={() => this.onCountrySelect(country)}>
         <li key={country}>
           <CountriesListItem cases={filterCriteria} name={country} flagPath={flagPath} />
         </li>
@@ -82,7 +63,8 @@ class CountriesList extends Component {
   }
 
   render() {
-    const { loading, error, countries, selectedCountry, searchQuery, countryDeselected } = this.props;
+    const { loading, error, countries, selectedCountry,
+            searchQuery, countryDeselected, selectedCriteria } = this.props;
 
     if (loading) {
       return <Spinner />;
@@ -92,7 +74,7 @@ class CountriesList extends Component {
       return <ErrorIndicator />;
     }
 
-    const elements = this.renderElements(countries, this.state.filter, selectedCountry, searchQuery);
+    const elements = this.renderElements(countries, selectedCriteria, selectedCountry, searchQuery);
 
     return (
       <div>
@@ -102,7 +84,7 @@ class CountriesList extends Component {
           </div>
           <SearchPanel onSearchChange={this.onSearchChange} />
           <ReturnToAll onClick={countryDeselected} />
-          <OptionsPanel onFilterChange={this.onFilterChange} />
+          <OptionsPanel />
           <div className="countries__container">
             <ul className="content__countries-list  countries">
               {elements}
@@ -114,12 +96,13 @@ class CountriesList extends Component {
   }
 }
 
-const mapStateToProps = ({ loading, error, countries, selectedCountry, searchQuery }) => ({
-  loading,
-  error,
+const mapStateToProps = ({ loadingCountries, errorCountries, countries, selectedCountry, searchQuery, selectedCriteria }) => ({
+  loading: loadingCountries,
+  error: errorCountries,
   countries,
   selectedCountry,
-  searchQuery
+  searchQuery,
+  selectedCriteria
 });
 
 const mapDispatchToProps = {

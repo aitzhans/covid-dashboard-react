@@ -1,6 +1,10 @@
 const initialState = {
   loading: true,
   error: null,
+  loadingCountries: true,
+  errorCountries: null,
+  loadingDaily: true,
+  errorDaily: null,
   global: {
     lastUpdated: "02-25-2021",
     population: null,
@@ -13,7 +17,13 @@ const initialState = {
   },
   countries: [],
   selectedCountry: null,
+  selectedCriteria: 'totalConfirmed',
   searchQuery: null,
+  currentGraph: {
+    dailyConfirmedIncrements: null,
+    dailyDeathsIncrements: null,
+    dailyRecoveredIncrements: null,
+  }
 };
 
 const reducer = (state = initialState, action) => {
@@ -37,8 +47,38 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         countries: action.payload,
-        loading: false,
-        error: null
+        loadingCountries: false,
+        errorCountries: null
+      };
+
+    case 'FETCH_GLOBAL_DAILY_REQUEST':
+      return {
+        ...state,
+        loadingDaily: true,
+        errorDaily: null
+      };
+
+    case 'FETCH_GLOBAL_DAILY_SUCCESS':
+      return {
+        ...state,
+        currentGraph: action.payload,
+        loadingDaily: false,
+        errorDaily: null
+      };
+
+    case 'FETCH_COUNTRY_DAILY_REQUEST':
+      return {
+        ...state,
+        loadingDaily: true,
+        errorDaily: null
+      };
+
+    case 'FETCH_COUNTRY_DAILY_SUCCESS':
+      return {
+        ...state,
+        currentGraph: action.payload,
+        loadingDaily: false,
+        errorDaily: null
       };
 
     case 'COUNTRY_SELECTED':
@@ -60,6 +100,13 @@ const reducer = (state = initialState, action) => {
         ...state,
         selectedCountry: null,
         searchQuery: action.payload
+      };
+
+    case 'SELECTED_CRITERIA_UPDATED':
+      console.log(action.payload);
+      return {
+        ...state,
+        selectedCriteria: action.payload
       };
 
     default:

@@ -11,7 +11,7 @@
   &--chart {
     position: relative;
     margin-top: 1.5rem;
-    
+
   }
 
   &--map {
@@ -44,7 +44,7 @@
   align-items: center;
   background: $main-bg-color;
   font-family: 'Titillium Web', sans-serif;
-  font-weight: 400; 
+  font-weight: 400;
   font-size: 1.4rem;
   line-height: 2rem;
   border: 1px $darker-bg-color solid;
@@ -66,22 +66,49 @@
   &:hover {
     cursor: initial;
   }
-} 
+}
+
+
+.options__opt {
+  display: block;
+  width: 33%;
+  height: 3rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: $main-bg-color;
+  font-family: 'Titillium Web', sans-serif;
+  font-weight: 400;
+  font-size: 1.4rem;
+  line-height: 2rem;
+  border: 1px $darker-bg-color solid;
+  margin-bottom: 1rem;
+
+  &:hover {
+    cursor: pointer;
+    background: $inputs-bg-color;
+  }
+
+  &--selected {
+    background: $toggle-circle-color;
+    font-weight: 600;
+  }
+}
 
 
 
-@media #{$tablet-width} { 
+@media #{$tablet-width} {
   .options {
-  
+
     &--chart {
       margin-top: 1.5rem;
     }
-  
+
     &--map {
       width: 70%;
       z-index: 999;
     }
-  
+
     &--countries {
       margin-top: 1rem;
       padding-right: 1.5rem;
