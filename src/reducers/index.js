@@ -103,7 +103,7 @@ const reducer = (state = initialState, action) => {
       };
 
     case 'SELECTED_CRITERIA_UPDATED':
-      console.log(action.payload);
+      // console.log(action.payload);
       return {
         ...state,
         selectedCriteria: action.payload

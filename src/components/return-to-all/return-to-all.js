@@ -1,9 +1,4 @@
 import React from 'react';
-import { connect } from 'react-redux';
-
-import withDataService from '../hoc';
-import { countryDeselected } from '../../actions';
-import { compose } from '../../utils';
 
 const ReturnToAll = ({ onClick }) => {
   return (

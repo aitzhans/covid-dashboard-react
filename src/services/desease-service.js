@@ -92,7 +92,7 @@ export default class DeseaseService {
     return currentGraph;
   }
 
-  _createIncrementsForGraphs = (iniObj, absKey) => {
+  _createIncrementsForGraphs = (iniObj) => {
     const currentGraphAbs = new Map();
     let prevDateCases = 0;
     for (const [date, activeCases] of Object.entries(iniObj)) {

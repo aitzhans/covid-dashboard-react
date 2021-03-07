@@ -1,5 +1,4 @@
-/* eslint-disable class-methods-use-this */
-import React, { Component, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Chart from 'chart.js';
 
 import { connect } from 'react-redux';

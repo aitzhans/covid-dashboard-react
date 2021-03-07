@@ -10,6 +10,7 @@ const Footer = () => {
       <span className="page-footer__text">
         2021 Github
         <a className="page-footer__link" href="https://github.com/aitzhans" target="blank"> aitzhans</a>
+        <a className="page-footer__link" href="https://github.com/temir-cs" target="blank"> temir-cs [Thanks for Map :)]</a>
       </span>
     </footer>
   );
